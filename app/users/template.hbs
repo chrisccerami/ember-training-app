@@ -1,13 +1,27 @@
-{{model.greeting.word}}, {{make-loud model.favoritePerson.login format='bold'}}
+<div id='sidebar'>
+  {{#person-list
+    people=model.people
+    favoritePerson=model.favoritePerson
+    onFavorite=(action 'setAsFavorite')
+    as |person|}}
+    <img src={{person.avatar_url}} height=100>{{person.login}}
+  {{else}}
+    No one's here
+  {{/person-list}}
+</div>
 
-{{#link-to 'change-greeting'}}Change Greeting{{/link-to}}
+<div id='main'>
+  {{model.greeting.word}}, {{make-loud model.favoritePerson.login format='bold'}}
 
-{{#person-list
-  people=model.people
-  favoritePerson=model.favoritePerson
-  onFavorite=(action 'setAsFavorite')
-  as |person|}}
-  <img src={{person.avatar_url}} height=100>{{person.login}}
-{{else}}
-  No one's here
-{{/person-list}}
+  <div>
+  Total Stargazers: {{totalRecords}}
+  </div>
+
+  <div>
+    <button href="#" disabled={{if isFirstPage true}} {{action 'previousPage'}}>Previous</button> -
+    <button href="#" disabled={{if isLastPage true}} {{action 'nextPage'}}>Next</button>
+  </div>
+
+  {{#link-to 'change-greeting'}}Change Greeting{{/link-to}}
+  {{outlet}}
+</div>

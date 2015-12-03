@@ -3,8 +3,15 @@ import { module, test } from 'qunit';
 
 module('Unit | Helper | make loud');
 
-// Replace this with your real tests.
-test('it works', function(assert) {
-  let result = makeLoud(42);
-  assert.ok(result);
+test('it works without a hash', function(assert) {
+  let result = makeLoud(["string"]);
+
+  assert.equal(result, "STRING");
+});
+
+test('it works with the bold option', function(assert) {
+  let string = "string";
+  let result = makeLoud([string], {format: "bold"});
+
+  assert.equal(result.string, `<strong>${string}</strong>`);
 });

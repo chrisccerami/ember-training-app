@@ -6,20 +6,37 @@ moduleForComponent('person-list', 'Integration | Component | person list', {
 });
 
 test('it renders', function(assert) {
-  
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });" + EOL + EOL +
+  assert.expect(4);
 
-  this.render(hbs`{{person-list}}`);
+  let model = {
+    people: [
+      {login: "chrisccerami", avatar_url: "github.com/chrisccerami"},
+      {login: "judngu", avatar_url: "github.com/judngu"}
+    ],
+    favoritePerson: "chrisccerami"
+  };
+  this.set('model', model);
+  this.set('actions', {
+    setAsFavorite(person) {
+      assert.equal(person.login, 'judngu');
+    }
+  });
 
-  assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:" + EOL +
   this.render(hbs`
-    {{#person-list}}
-      template block text
+    {{#person-list
+      people=model.people
+      favoritePerson=model.favoritePerson
+      onFavorite=(action 'setAsFavorite')
+      as |person|}}
+      <img src={{person.avatar_url}} height=100>{{person.login}}
+    {{else}}
+      No one's here
     {{/person-list}}
   `);
 
-  assert.equal(this.$().text().trim(), 'template block text');
+  assert.ok(this.$().text().trim().match(/chrisccerami/));
+  assert.ok(this.$().text().trim().match(/judngu/));
+  assert.ok(this.$('img')[0].src.match(/github.com\/chrisccerami/));
+
+  this.$('.person:nth-of-type(2)').click();
 });

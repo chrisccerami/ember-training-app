@@ -1,5 +1,5 @@
 {{#each people as |person|}}
-  <li class={{if (eq person favoritePerson) 'favorite'}} {{action 'setAsFavorite' person}}>
+  <li class="person {{if (eq person favoritePerson) 'favorite'}}" {{action 'setAsFavorite' person}}>
     {{yield person}}
   </li>
 {{else}}

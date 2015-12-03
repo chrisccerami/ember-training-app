@@ -4,15 +4,19 @@ const {
   service
 } = Ember.inject;
 
-const clientId = '659c99189de8471ddbec';
-const clientSecret = '01e103c6c5d3686fdd9e680f289150c0ab513561';
+const clientId = 'e1390b0a729c5c4ce2c5';
+const clientSecret = '3402245cff2a7ab233d4bc3112fb34aa019081a8';
 
 export default Ember.Service.extend({
   ajax: service(),
   baseUrl: "https://api.github.com/",
 
-  request(repo) {
+  request(repo, params) {
     let baseUrl = this.get('baseUrl');
-    return this.get('ajax').request(`${baseUrl}${repo}?client_id=${clientId}&client_secret=${clientSecret}`);
+    let fullUrl = `${baseUrl}${repo}?client_id=${clientId}&client_secret=${clientSecret}`;
+
+    return this.get('ajax').request(fullUrl, {
+      data: params
+    });
   }
 });

@@ -12,6 +12,12 @@ const {
 export default Route.extend({
   greeting: service(),
 
+  queryParams: {
+    page: {
+      refreshModel: true
+    }
+  },
+
   activate() {
      console.log('activate');
    },
@@ -20,19 +26,16 @@ export default Route.extend({
      console.log('beforeModel');
    },
 
-   model() {
-       let greeting = this.get('greeting');
-       let people = this.get('github').request('repos/chrisccerami/mars-photo-api/stargazers');
+   model(params) {
+     let greeting = this.get('greeting');
+     let people = this.get('github').request('repos/emberjs/ember.js/stargazers', params);
 
-       return RSVP.hash({
-         greeting,
-         people,
-         repoInfo: this.get('github').request('repos/emberjs/ember.js')
-       })
-       .catch(() => {
-         alert('oops');
-       });
-     },
+     return RSVP.hash({
+       greeting,
+       people,
+       repoInfo: this.get('github').request('repos/emberjs/ember.js')
+     });
+   },
 
    afterModel(model) {
      model.favoritePerson = model.people[0];
