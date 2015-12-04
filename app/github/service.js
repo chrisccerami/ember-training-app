@@ -4,8 +4,8 @@ const {
   service
 } = Ember.inject;
 
-const clientId = 'e1390b0a729c5c4ce2c5';
-const clientSecret = '3402245cff2a7ab233d4bc3112fb34aa019081a8';
+export const clientId = 'e1390b0a729c5c4ce2c5';
+export const clientSecret = '3402245cff2a7ab233d4bc3112fb34aa019081a8';
 
 export default Ember.Service.extend({
   ajax: service(),

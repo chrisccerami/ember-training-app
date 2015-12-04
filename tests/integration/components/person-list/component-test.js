@@ -1,24 +1,39 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
+// let something;
+
 moduleForComponent('person-list', 'Integration | Component | person list', {
-  integration: true
+  integration: true,
+
+  // examples:
+
+  // beforeEach() {
+  //   something = Ember.Object.create();
+  // },
+  //
+  // afterEach() {
+  //
+  // }
 });
 
 test('it renders', function(assert) {
-  assert.expect(4);
+  assert.expect(5);
+
+  let favoritePerson = {login: "chrisccerami", avatar_url: "github.com/chrisccerami"};
 
   let model = {
     people: [
-      {login: "chrisccerami", avatar_url: "github.com/chrisccerami"},
+      favoritePerson,
       {login: "judngu", avatar_url: "github.com/judngu"}
     ],
-    favoritePerson: "chrisccerami"
+    favoritePerson: favoritePerson
   };
   this.set('model', model);
   this.set('actions', {
     setAsFavorite(person) {
       assert.equal(person.login, 'judngu');
+      this.set('model.favoritePerson', person);
     }
   });
 
@@ -39,4 +54,16 @@ test('it renders', function(assert) {
   assert.ok(this.$('img')[0].src.match(/github.com\/chrisccerami/));
 
   this.$('.person:nth-of-type(2)').click();
+  let isFavorite = this.$('.person:nth-of-type(2)').hasClass('favorite');
+  assert.ok(isFavorite, "click a person should favorite");
+});
+
+test('throws error if no favoritePerson', function(assert) {
+  assert.throws(() => {
+    this.render(hbs`
+      {{#person-list}}
+        no person given
+      {{/person-list}}
+    `);
+  });
 });
